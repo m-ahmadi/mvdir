@@ -9,11 +9,11 @@ const readdir  = promisify(fs.readdir);
 const copyFile = promisify(fs.copyFile);
 const rmdir    = promisify(fs.rmdir);
 
-module.exports = async function (_src='', _dest='', _opts) {
+async function mvdir(_src='', _dest='', _opts) {
 	let src  = typeof _src  === 'string' ? _src  : undefined;
 	let dest = typeof _dest === 'string' ? _dest : undefined;
-	const opts = isObj(_opts) ? _opts : { copy: false, overwrite: true };
-	// are src and dest arguments string?
+	const opts = isObj(_opts) ? _opts : { overwrite: true, copy: false };
+	// are src and dest arguments valid?
 	if (!src || !dest) {
 		console.log('[91mInvalid argument(s).[0m');
 		return;
@@ -26,7 +26,7 @@ module.exports = async function (_src='', _dest='', _opts) {
 	});
 	if (!src) return;
 	
-	// src exist.
+	// src exists.
 	// if src is a file:
 	const srcStats = await stat(src);
 	if ( !srcStats.isDirectory() ) {
@@ -38,9 +38,9 @@ module.exports = async function (_src='', _dest='', _opts) {
 			done = true;
 		});
 		if (done) return;
-		// dest exist.
-		if (opts.overwrite) {
-			console.log('[91mDestination already exist: [0m' + dest);
+		// dest exists.
+		if (!opts.overwrite) {
+			console.log('[91mDestination already exists: [0m' + dest);
 			return;
 		}
 		const destStats = await stat(dest);
@@ -56,19 +56,19 @@ module.exports = async function (_src='', _dest='', _opts) {
 	// src is a folder.
 	// does dest exist?
 	await access(dest).catch(async err => {
-		await mkdir(dest);
+		await mkdir(dest, { recursive: true });
 	});
 	
-	// dest exist.
-	if (opts.overwrite) {
-		console.log('[91mDestination already exist: [0m' + dest);
+	// dest exists.
+	if (!opts.overwrite) {
+		console.log('[91mDestination already exists: [0m' + dest);
 		return;
 	}
 	
 	// if dest is a file:
 	const stats = await stat(dest);
 	if ( !stats.isDirectory() ) {
-		if (opts.overwrite) {
+		if (!opts.overwrite) {
 			console.log('[91mDestination is an existing file: [0m' + dest);
 			return;
 		} else {
@@ -84,9 +84,8 @@ module.exports = async function (_src='', _dest='', _opts) {
 		const to = join(dest, file);
 		const stats = await stat(ferom);
 		if ( stats.isDirectory() ) {
-			await mkdir(to);
 			const files = await readdir(ferom);
-			if (files.length) await moveDir(ferom, to);
+			if (files.length) await mvdir(ferom, to, opts);
 		} else {
 			await copyFile(ferom, to);
 			if (!opts.copy) await unlink(ferom);
@@ -104,3 +103,5 @@ function isObj(v) {
 		Object.prototype.toString.call(v) === "[object Object]"
 	);
 }
+
+module.exports = mvdir;
