@@ -1,6 +1,6 @@
 {
   "name": "mvdir",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Move or copy files and directories. (async, recursive, across devices, minimalistic, 0 dependencies)",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,15 @@
     "type": "git",
     "url": "git+https://github.com/m-ahmadi/mvdir.git"
   },
-  "keywords": ["move", "mv", "copy", "file", "folder", "recursive", "minimal"],
+  "keywords": [
+    "move",
+    "mv",
+    "copy",
+    "file",
+    "folder",
+    "recursive",
+    "minimal"
+  ],
   "author": "Mohammad Ahmadi",
   "license": "MIT",
   "bugs": {
