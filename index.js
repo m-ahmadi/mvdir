@@ -12,7 +12,7 @@ const rmdir    = promisify(fs.rmdir);
 module.exports = async function (_src='', _dest='', _opts) {
 	let src  = typeof _src  === 'string' ? _src  : undefined;
 	let dest = typeof _dest === 'string' ? _dest : undefined;
-	const opts = isObj(_opts) ? _opts : { overwrite: true };
+	const opts = isObj(_opts) ? _opts : { copy: false, overwrite: true };
 	// are src and dest arguments string?
 	if (!src || !dest) {
 		console.log('[91mInvalid argument(s).[0m');
@@ -34,7 +34,7 @@ module.exports = async function (_src='', _dest='', _opts) {
 		await access(dest).catch(async err => {
 			// if dest doesn't exist:
 			await copyFile(src, dest);
-			await unlink(src);
+			if (!opts.copy) await unlink(src);
 			done = true;
 		});
 		if (done) return;
@@ -49,7 +49,7 @@ module.exports = async function (_src='', _dest='', _opts) {
 			dest = join(dest, parse(src).base);
 		}
 		await copyFile(src, dest);
-		await unlink(src);
+		if (!opts.copy) await unlink(src);
 		return;
 	}
 	
@@ -89,10 +89,10 @@ module.exports = async function (_src='', _dest='', _opts) {
 			if (files.length) await moveDir(ferom, to);
 		} else {
 			await copyFile(ferom, to);
-			await unlink(ferom);
+			if (!opts.copy) await unlink(ferom);
 		}
 	}
-	await rmdir(src);
+	if (!opts.copy) await rmdir(src);
 	return true;
 };
 

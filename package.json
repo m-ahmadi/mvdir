@@ -1,7 +1,7 @@
 {
   "name": "mvdir",
   "version": "1.0.0",
-  "description": "Move file or directory. recursive, minimalistic, 0 dependencies.",
+  "description": "Move or copy file or directory. recursive, minimalistic, 0 dependencies.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
