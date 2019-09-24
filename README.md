@@ -3,7 +3,7 @@
 const mvdir = require('mvdir');
 
 await mvdir('source/file.js', 'dest/file.js'); // move file.
-await mvdir('source/file.js', 'dest/');        // move file. (same as above)
+await mvdir('source/file.js', 'dest/');        // move file. (same as above if dest directory already exists)
 await mvdir('source', 'dest');                 // move directory.
 await mvdir('source', 'a/b/c/dest');           // creating necessary dirs.
 await mvdir('file1.js', 'D:\\file.js');        // move across drives/partitions.
