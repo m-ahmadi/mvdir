@@ -87,11 +87,11 @@ async function mvdir(_src='', _dest='', _opts) {
     if ( stats.isDirectory() ) {
       await mvdir(ferom, to, opts);
     } else {
-			const err = await rename(ferom, to);
-			if (err && err.code === 'EXDEV') {
-				await copyFile(ferom, to);
-				if (!opts.copy) await unlink(ferom);
-			}
+      const err = await rename(ferom, to);
+      if (err && err.code === 'EXDEV') {
+        await copyFile(ferom, to);
+        if (!opts.copy) await unlink(ferom);
+      }
     }
   }
   if (!opts.copy) await rmdir(src);
