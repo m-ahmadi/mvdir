@@ -6,6 +6,7 @@ const mkdir    = promisify(fs.mkdir);
 const stat     = promisify(fs.stat);
 const unlink   = promisify(fs.unlink);
 const readdir  = promisify(fs.readdir);
+const rename   = promisify(fs.rename);
 const copyFile = promisify(fs.copyFile);
 const rmdir    = promisify(fs.rmdir);
 
@@ -66,8 +67,8 @@ async function mvdir(_src='', _dest='', _opts) {
   }
   
   // if dest is a file:
-  const stats = await stat(dest);
-  if ( !stats.isDirectory() ) {
+  const destStats = await stat(dest);
+  if ( !destStats.isDirectory() ) {
     if (!opts.overwrite) {
       console.log('[91mDestination is an existing file: [0m' + dest);
       return;
@@ -84,11 +85,13 @@ async function mvdir(_src='', _dest='', _opts) {
     const to = join(dest, file);
     const stats = await stat(ferom);
     if ( stats.isDirectory() ) {
-      const files = await readdir(ferom);
-      if (files.length) await mvdir(ferom, to, opts);
+      await mvdir(ferom, to, opts);
     } else {
-      await copyFile(ferom, to);
-      if (!opts.copy) await unlink(ferom);
+			const err = await rename(ferom, to);
+			if (err && err.code === 'EXDEV') {
+				await copyFile(ferom, to);
+				if (!opts.copy) await unlink(ferom);
+			}
     }
   }
   if (!opts.copy) await rmdir(src);

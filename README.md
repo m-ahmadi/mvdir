@@ -1,3 +1,4 @@
+It first tries `fs.rename()`, then falls back on `fs.copyFile()` and `fs.unlink()`.
 ## Usage:
 ```javascript
 const mvdir = require('mvdir');
