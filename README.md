@@ -1,3 +1,8 @@
+## Why?
+I did this: `npm i mv`,  
+then I saw this: `+ mv@2.1.1 added 15 packages`,  
+then I said no.
+
 It first tries `fs.rename()`, then falls back on `fs.copyFile()` and `fs.unlink()`.
 ## Usage:
 ```javascript
