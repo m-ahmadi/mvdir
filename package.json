@@ -1,6 +1,6 @@
 {
   "name": "mvdir",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Move or copy files and directories. (async, recursive, across devices, copy & delete fallback, minimalistic with 0 dependencies)",
   "main": "index.js",
   "scripts": {
