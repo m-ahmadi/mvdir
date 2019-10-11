@@ -101,10 +101,10 @@ async function mvdir(_src='', _dest='', _opts) {
 function isObj(v) {
   return (
     v &&
-    typeof v === "object" &&
+    typeof v === 'object' &&
     typeof v !== null &&
-    Object.prototype.toString.call(v) === "[object Object]"
-  );
+    Object.prototype.toString.call(v) === '[object Object]'
+  ) ? true : false;
 }
 
 module.exports = mvdir;
