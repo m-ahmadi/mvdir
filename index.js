@@ -38,7 +38,7 @@ async function mvdir(_src='', _dest='', _opts) {
       if (!opts.copy) await unlink(src);
       done = true;
     });
-    if (done) return;
+    if (done) return true;
     // dest exists.
     if (!opts.overwrite) {
       console.log('[91mDestination already exists: [0m' + dest);
@@ -51,7 +51,7 @@ async function mvdir(_src='', _dest='', _opts) {
     }
     await copyFile(src, dest);
     if (!opts.copy) await unlink(src);
-    return;
+    return true;
   }
   
   // src is a folder.
