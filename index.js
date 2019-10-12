@@ -94,11 +94,12 @@ async function mvdir(_src='', _dest='', _opts) {
 };
 
 async function moveFile(src, dest, copy) {
-  const err = await rename(src, dest);
-  if (err && err.code === 'EXDEV') {
-    await copyFile(src, dest);
-    if (!copy) await unlink(src);
-  }
+  await rename(src, dest).catch(async err => {
+    if (err.code === 'EXDEV') {
+      await copyFile(src, dest);
+      if (!copy) await unlink(src);
+    }
+  });
 }
 
 function isObj(v) {
