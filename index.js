@@ -34,7 +34,14 @@ async function mvdir(_src='', _dest='', _opts) {
   if ( !srcStats.isDirectory() ) {
     let done;
     await access(dest).catch(async err => {
-      // if dest doesn't exist:
+      // dest doesn't exist.
+      const destDir = parse(dest).dir;
+      if (destDir) {
+        await access(destDir).catch(async e => {
+          // dest folder(s) don't exist.
+          await mkdir(destDir, { recursive: true });
+        });
+      }
       await moveFile(src, dest, opts.copy);
       done = true;
     });
