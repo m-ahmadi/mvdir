@@ -35,8 +35,7 @@ async function mvdir(_src='', _dest='', _opts) {
     let done;
     await access(dest).catch(async err => {
       // if dest doesn't exist:
-      await copyFile(src, dest);
-      if (!opts.copy) await unlink(src);
+      await moveFile(src, dest, opts.copy);
       done = true;
     });
     if (done) return true;
@@ -50,8 +49,7 @@ async function mvdir(_src='', _dest='', _opts) {
       // dest is a folder.
       dest = join(dest, parse(src).base);
     }
-    await copyFile(src, dest);
-    if (!opts.copy) await unlink(src);
+    await moveFile(src, dest, opts.copy);
     return true;
   }
   
@@ -88,16 +86,20 @@ async function mvdir(_src='', _dest='', _opts) {
     if ( stats.isDirectory() ) {
       await mvdir(ferom, to, opts);
     } else {
-      const err = await rename(ferom, to);
-      if (err && err.code === 'EXDEV') {
-        await copyFile(ferom, to);
-        if (!opts.copy) await unlink(ferom);
-      }
+      await moveFile(ferom, to, opts.copy);
     }
   }
   if (!opts.copy) await rmdir(src);
   return true;
 };
+
+async function moveFile(src, dest, copy) {
+  const err = await rename(src, dest);
+  if (err && err.code === 'EXDEV') {
+    await copyFile(src, dest);
+    if (!copy) await unlink(src);
+  }
+}
 
 function isObj(v) {
   return (
