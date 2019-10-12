@@ -9,6 +9,7 @@ const readdir  = promisify(fs.readdir);
 const rename   = promisify(fs.rename);
 const copyFile = promisify(fs.copyFile);
 const rmdir    = promisify(fs.rmdir);
+const log = (m1, m2) => console.log(`[91m${m1}[0m${m2}`);
 
 async function mvdir(_src='', _dest='', _opts) {
   let src  = typeof _src  === 'string' ? _src  : undefined;
@@ -16,13 +17,13 @@ async function mvdir(_src='', _dest='', _opts) {
   const opts = isObj(_opts) ? _opts : { overwrite: true, copy: false };
   // are src and dest arguments valid?
   if (!src || !dest) {
-    console.log('[91mInvalid argument(s).[0m');
+    log('Invalid argument(s).');
     return;
   }
   
   // does src exist?
   await access(src).catch(async err => {
-    console.log('[91mNo such file or directory: [0m' + src);
+    log('No such file or directory: ', src);
     src = false;
   });
   if (!src) return;
@@ -41,7 +42,7 @@ async function mvdir(_src='', _dest='', _opts) {
     if (done) return true;
     // dest exists.
     if (!opts.overwrite) {
-      console.log('[91mDestination already exists: [0m' + dest);
+      log('Destination already exists: ', dest);
       return;
     }
     const destStats = await stat(dest);
@@ -62,7 +63,7 @@ async function mvdir(_src='', _dest='', _opts) {
   
   // dest exists.
   if (!opts.overwrite) {
-    console.log('[91mDestination already exists: [0m' + dest);
+    log('Destination already exists: ', dest);
     return;
   }
   
@@ -70,7 +71,7 @@ async function mvdir(_src='', _dest='', _opts) {
   const destStats = await stat(dest);
   if ( !destStats.isDirectory() ) {
     if (!opts.overwrite) {
-      console.log('[91mDestination is an existing file: [0m' + dest);
+      log('Destination is an existing file: ', dest);
       return;
     } else {
       await unlink(dest);
