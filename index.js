@@ -22,7 +22,7 @@ async function mvdir(_src='', _dest='', _opts) {
   }
   
   // does src exist?
-  await access(src).catch(async err => {
+  await access(src).catch(err => {
     log('No such file or directory: ', src);
     src = false;
   });
