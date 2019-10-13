@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/m-ahmadi/mvdir.svg?branch=master)](https://travis-ci.com/m-ahmadi/mvdir)
+[![install size](https://packagephobia.now.sh/badge?p=mvdir)](https://packagephobia.now.sh/result?p=mvdir)
 ## Why?
 I did this: `npm i mv`,  
 then I saw this: `+ mv@2.1.1 added 15 packages`,  
