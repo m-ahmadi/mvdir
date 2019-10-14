@@ -15,18 +15,21 @@ async function mvdir(_src='', _dest='', _opts) {
   let src  = typeof _src  === 'string' ? _src  : undefined;
   let dest = typeof _dest === 'string' ? _dest : undefined;
   const opts = isObj(_opts) ? _opts : { overwrite: true, copy: false };
+  let msg;
   // are src and dest arguments valid?
   if (!src || !dest) {
-    log('Invalid argument(s).');
-    return;
+    msg = 'Invalid argument(s).';
+    log(msg);
+    return new CustomError(1, msg);
   }
   
   // does src exist?
+  msg = ['No such file or directory: ', src];
   await access(src).catch(err => {
-    log('No such file or directory: ', src);
+    log(...msg);
     src = false;
   });
-  if (!src) return;
+  if (!src) return new CustomError(2, ...msg);
   
   // src exists.
   // if src is a file:
@@ -45,11 +48,12 @@ async function mvdir(_src='', _dest='', _opts) {
       await moveFile(src, dest, opts.copy);
       done = true;
     });
-    if (done) return true;
+    if (done) return;
     // dest exists.
     if (!opts.overwrite) {
-      log('Destination already exists: ', dest);
-      return;
+      msg = ['Destination already exists: ', dest];
+      log(...msg);
+      return new CustomError(3, ...msg);
     }
     const destStats = await stat(dest);
     if ( destStats.isDirectory() ) {
@@ -57,7 +61,7 @@ async function mvdir(_src='', _dest='', _opts) {
       dest = join(dest, parse(src).base);
     }
     await moveFile(src, dest, opts.copy);
-    return true;
+    return;
   }
   
   // src is a folder.
@@ -68,16 +72,18 @@ async function mvdir(_src='', _dest='', _opts) {
   
   // dest exists.
   if (!opts.overwrite) {
-    log('Destination already exists: ', dest);
-    return;
+    msg = ['Destination already exists: ', dest];
+    log(...msg);
+    return new CustomError(3, ...msg);
   }
   
   // if dest is a file:
   const destStats = await stat(dest);
   if ( !destStats.isDirectory() ) {
     if (!opts.overwrite) {
-      log('Destination is an existing file: ', dest);
-      return;
+      msg = ['Destination is an existing file: ', dest];
+      log(...msg);
+      return new CustomError(4, ...msg);
     } else {
       await unlink(dest);
       await mkdir(dest);
@@ -97,7 +103,7 @@ async function mvdir(_src='', _dest='', _opts) {
     }
   }
   if (!opts.copy) await rmdir(src);
-  return true;
+  return;
 };
 
 async function moveFile(src, dest, copy) {
@@ -116,6 +122,16 @@ function isObj(v) {
     typeof v !== null &&
     Object.prototype.toString.call(v) === '[object Object]'
   ) ? true : false;
+}
+
+class CustomError {
+  constructor(code, m1, m2) {
+    let str = '';
+    str += m1 || '';
+    str += m2 || '';
+    this.code = code;
+    this.message = str;
+  }
 }
 
 module.exports = mvdir;

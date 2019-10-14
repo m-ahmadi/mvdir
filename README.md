@@ -16,8 +16,12 @@ await mvdir('source', 'dest');                 // move directory.
 await mvdir('source', 'a/b/c/dest');           // creating necessary dirs.
 await mvdir('file.js', 'D:\\file.js');         // move across drives/partitions.
 
-mvdir('source/file.js', 'dest/file.js').then(success => {
-  if (success) console.log('done.');
+// returns undefined if successful, or an error object:
+const err = await mvdir('source/file.js', 'dest/file.js');
+if (err) console.log(err.message);
+
+mvdir('source/file.js', 'dest/file.js').then(err => {
+  if (!err) console.log('done.');
 });
 ```
 
