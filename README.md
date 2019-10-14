@@ -18,7 +18,7 @@ await mvdir('file.js', 'D:\\file.js');         // move across drives/partitions.
 
 // returns undefined if successful, or an error object:
 const err = await mvdir('source/file.js', 'dest/file.js');
-if (err) console.log(err.message);
+if (!err) console.log('done.');
 
 mvdir('source/file.js', 'dest/file.js').then(err => {
   if (!err) console.log('done.');
