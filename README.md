@@ -1,3 +1,4 @@
+[![NPM](https://nodei.co/npm/mvdir.png)](https://nodei.co/npm/mvdir/)  
 [![Build Status](https://travis-ci.com/m-ahmadi/mvdir.svg?branch=master)](https://travis-ci.com/m-ahmadi/mvdir)
 [![install size](https://packagephobia.now.sh/badge?p=mvdir@latest)](https://packagephobia.now.sh/result?p=mvdir@latest)
 ## Why?
