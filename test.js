@@ -64,7 +64,7 @@ const tests = [
 
 (async function () {
   let i = 1;
-  for (test of tests) {
+  for (const test of tests) {
     log( `Test ${i}: `, await test() );
     i++;
   } 

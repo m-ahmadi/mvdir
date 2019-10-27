@@ -92,7 +92,7 @@ async function mvdir(_src='', _dest='', _opts) {
   
   // src and dest are folders.
   const files = await readdir(src);
-  for (file of files) {
+  for (const file of files) {
     const ferom = join(src, file);
     const to = join(dest, file);
     const stats = await stat(ferom);
