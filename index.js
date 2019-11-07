@@ -67,17 +67,20 @@ async function mvdir(_src='', _dest='', _opts) {
   
   // src is a folder.
   // does dest exist?
-  await access(dest).catch(async err => {
-    await mkdir(dest, { recursive: true });
-  });
+  let destExists = true;
+  await access(dest).catch(err => destExists = false);
   
-  // dest exists.
-  if (!opts.overwrite) {
-    msg = ['Destination already exists: ', dest];
-    log(...msg);
-    return new CustomError(3, ...msg);
+  if (!destExists) {
+    await mkdir(dest, { recursive: true });
+  } else {
+    if (!opts.overwrite) {
+      msg = ['Destination already exists: ', dest];
+      log(...msg);
+      return new CustomError(3, ...msg);
+    }
   }
   
+  // dest exists.
   // if dest is a file:
   const destStats = await stat(dest);
   if ( !destStats.isDirectory() ) {
@@ -140,4 +143,5 @@ class CustomError {
 }
 
 module.exports = mvdir;
+
 
