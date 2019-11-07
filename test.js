@@ -16,7 +16,9 @@ const tests = [
   async function () {
     mkdirSync('source');
     writeFileSync('source/file.js', text());
+    
     const stat = await mvdir('source/file.js', 'dest');
+    
     unlinkSync('dest');
     rmdirSync('source');
     return stat;
@@ -31,11 +33,11 @@ const tests = [
     
     const stat = await mvdir('source', 'dest');
     
-    unlinkSync('dest/a/file.js');
     unlinkSync('dest/b/file.js');
+    unlinkSync('dest/a/file.js');
     unlinkSync('dest/file.js');
-    rmdirSync('dest/a');
     rmdirSync('dest/b');
+    rmdirSync('dest/a');
     rmdirSync('dest');
     return stat;
   },
@@ -58,6 +60,54 @@ const tests = [
     const stat = await mvdir('file.js', 'D:\\file.js');
     
     unlinkSync('D:\\file.js');
+    return stat;
+  },
+  async function () {
+    mkdirSync('source');
+    mkdirSync('source/a');
+    mkdirSync('source/b');
+    writeFileSync('source/file.js', text());
+    writeFileSync('source/a/file.js', text());
+    writeFileSync('source/b/file.js', text());
+    
+    const stat = await mvdir('source', 'dest', { copy: true });
+    
+    unlinkSync('dest/a/file.js');
+    unlinkSync('dest/b/file.js');
+    unlinkSync('dest/file.js');
+    rmdirSync('dest/a');
+    rmdirSync('dest/b');
+    rmdirSync('dest');
+    unlinkSync('source/b/file.js');
+    unlinkSync('source/a/file.js');
+    unlinkSync('source/file.js');
+    rmdirSync('source/b');
+    rmdirSync('source/a');
+    rmdirSync('source');
+    return stat;
+  },
+  async function () {
+    mkdirSync('source');
+    mkdirSync('source/a');
+    mkdirSync('source/b');
+    writeFileSync('source/file.js', text());
+    writeFileSync('source/a/file.js', text());
+    writeFileSync('source/b/file.js', text());
+    
+    const stat = await mvdir('source', 'dest', { copy: true, overwrite: false });
+    
+    unlinkSync('dest/a/file.js');
+    unlinkSync('dest/b/file.js');
+    unlinkSync('dest/file.js');
+    rmdirSync('dest/a');
+    rmdirSync('dest/b');
+    rmdirSync('dest');
+    unlinkSync('source/b/file.js');
+    unlinkSync('source/a/file.js');
+    unlinkSync('source/file.js');
+    rmdirSync('source/b');
+    rmdirSync('source/a');
+    rmdirSync('source');
     return stat;
   }
 ];
