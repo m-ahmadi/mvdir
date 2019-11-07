@@ -94,7 +94,7 @@ async function mvdir(_src='', _dest='', _opts) {
     }
   }
   
-  // src and dest are folders.
+  // src and dest are both folders.
   const files = await readdir(src);
   for (const file of files) {
     const ferom = join(src, file);
@@ -143,5 +143,4 @@ class CustomError {
 }
 
 module.exports = mvdir;
-
 
