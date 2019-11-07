@@ -108,10 +108,14 @@ async function mvdir(_src='', _dest='', _opts) {
 };
 
 async function moveFile(src, dest, copy) {
+  if (copy) {
+    await copyFile(src, dest);
+    return;
+  }
   await rename(src, dest).catch(async err => {
     if (err.code === 'EXDEV') {
       await copyFile(src, dest);
-      if (!copy) await unlink(src);
+      await unlink(src);
     }
   });
 }
@@ -136,3 +140,4 @@ class CustomError {
 }
 
 module.exports = mvdir;
+
