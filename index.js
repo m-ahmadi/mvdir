@@ -25,59 +25,45 @@ async function mvdir(_src='', _dest='', _opts) {
   }
   
   // does src exist?
-  msg = ['No such file or directory: ', src];
-  await access(src).catch(err => {
+  if ( !await exists(src) ) {
+    msg = ['No such file or directory: ', src];
     log(...msg);
-    src = false;
-  });
-  if (!src) return new CustomError(2, ...msg);
+    return new CustomError(2, ...msg);
+  }
   
   // src exists.
   // if src is a file:
   const srcStats = await stat(src);
   if ( !srcStats.isDirectory() ) {
-    let done;
-    await access(dest).catch(async err => {
-      // dest doesn't exist.
-      const destDir = parse(dest).dir;
-      if (destDir) {
-        await access(destDir).catch(async e => {
-          // dest folder(s) don't exist.
-          await mkdir(destDir, { recursive: true });
-        });
+    // does dest exists?
+    if ( await exists(dest) ) {
+      if (!opts.overwrite) {
+        msg = ['Destination already exists: ', dest];
+        log(...msg);
+        return new CustomError(3, ...msg);
       }
+      const destStats = await stat(dest);
+      if ( destStats.isDirectory() ) dest = join(dest, parse(src).base); // dest is a folder.
       await moveFile(src, dest, opts.copy);
-      done = true;
-    });
-    if (done) return;
-    // dest exists.
-    if (!opts.overwrite) {
-      msg = ['Destination already exists: ', dest];
-      log(...msg);
-      return new CustomError(3, ...msg);
+      return;
     }
-    const destStats = await stat(dest);
-    if ( destStats.isDirectory() ) {
-      // dest is a folder.
-      dest = join(dest, parse(src).base);
-    }
+    // dest doesn't exist.
+    const destDir = parse(dest).dir;
+    if ( destDir && !await exists(destDir) ) await mkdir(destDir, { recursive: true }); // dest folder(s) don't exist.
     await moveFile(src, dest, opts.copy);
     return;
   }
   
   // src is a folder.
   // does dest exist?
-  let destExists = true;
-  await access(dest).catch(err => destExists = false);
-  
-  if (!destExists) {
-    await mkdir(dest, { recursive: true });
-  } else {
+  if ( await exists(dest) ) {
     if (!opts.overwrite) {
       msg = ['Destination already exists: ', dest];
       log(...msg);
       return new CustomError(3, ...msg);
     }
+  } else {
+    await mkdir(dest, { recursive: true });
   }
   
   // dest exists.
@@ -121,6 +107,12 @@ async function moveFile(src, dest, copy) {
       await unlink(src);
     }
   });
+}
+
+async function exists(path) {
+  let res = true;
+  await access(path).catch(err => res = false);
+  return res;
 }
 
 function isObj(v) {
