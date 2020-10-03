@@ -1,9 +1,11 @@
 {
   "name": "mvdir",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Move or copy files and directories. (async, recursive, across devices, copy & delete fallback, minimalistic with 0 dependencies)",
   "main": "index.js",
-  "files": ["index.js"],
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "test": "node test.js"
   },
@@ -27,4 +29,3 @@
   },
   "homepage": "https://github.com/m-ahmadi/mvdir#readme"
 }
-
