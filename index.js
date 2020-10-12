@@ -1,14 +1,5 @@
-const fs = require('fs');
 const { join, parse } = require('path');
-const { promisify } = require('util');
-const access   = promisify(fs.access);
-const mkdir    = promisify(fs.mkdir);
-const stat     = promisify(fs.stat);
-const unlink   = promisify(fs.unlink);
-const readdir  = promisify(fs.readdir);
-const rename   = promisify(fs.rename);
-const copyFile = promisify(fs.copyFile);
-const rmdir    = promisify(fs.rmdir);
+const { access, mkdir, stat, unlink, readdir, rename, copyFile, rmdir } = require('fs').promises;
 const log = (m1, m2) => console.log(`[91m${m1}[0m${m2}`);
 
 async function mvdir(_src='', _dest='', _opts) {
