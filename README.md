@@ -1,4 +1,4 @@
-[![NPM](https://nodei.co/npm/mvdir.png)](https://nodei.co/npm/mvdir/)  
+[![NPM](https://nodei.co/npm/mvdir.png?stars=true&downloads=true)](https://nodei.co/npm/mvdir/)  
 [![Build Status](https://travis-ci.com/m-ahmadi/mvdir.svg?branch=master)](https://travis-ci.com/m-ahmadi/mvdir)
 [![install size](https://packagephobia.now.sh/badge?p=mvdir@latest)](https://packagephobia.now.sh/result?p=mvdir@latest)
 ## Why?
@@ -36,4 +36,9 @@ await mvdir('dir1', 'dir2', { copy: true });
 ```javascript
 await mvdir('file1.js', 'file2.js', { overwrite: false }); // error if file2.js already exists.
 await mvdir('dir1', 'dir2', { overwrite: false });         // error if dir2     already exists.
+```
+
+### Don't log errors:
+```javascript
+await mvdir('dir1', 'dir2', { log: false });
 ```
