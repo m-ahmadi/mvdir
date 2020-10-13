@@ -5,20 +5,20 @@ const log = (m1, m2) => console.log(`[91m${m1}[0m${m2}`);
 async function mvdir(_src='', _dest='', _opts) {
   let src  = typeof _src  === 'string' ? _src  : undefined;
   let dest = typeof _dest === 'string' ? _dest : undefined;
-  const defOpts = { overwrite: true, copy: false };
+  const defOpts = { overwrite: true, copy: false, log: true };
   const opts = isObj(_opts) ? Object.assign(defOpts, _opts) : defOpts;
   let msg;
   // are src and dest arguments valid?
   if (!src || !dest) {
     msg = 'Invalid argument(s).';
-    log(msg);
+    if (opts.log) log(msg);
     return new CustomError(1, msg);
   }
   
   // does src exist?
   if ( !await exists(src) ) {
     msg = ['No such file or directory: ', src];
-    log(...msg);
+    if (opts.log) log(...msg);
     return new CustomError(2, ...msg);
   }
   
@@ -30,7 +30,7 @@ async function mvdir(_src='', _dest='', _opts) {
     if ( await exists(dest) ) {
       if (!opts.overwrite) {
         msg = ['Destination already exists: ', dest];
-        log(...msg);
+        if (opts.log) log(...msg);
         return new CustomError(3, ...msg);
       }
       const destStats = await stat(dest);
@@ -50,7 +50,7 @@ async function mvdir(_src='', _dest='', _opts) {
   if ( await exists(dest) ) {
     if (!opts.overwrite) {
       msg = ['Destination already exists: ', dest];
-      log(...msg);
+      if (opts.log) log(...msg);
       return new CustomError(3, ...msg);
     }
   } else {
@@ -63,7 +63,7 @@ async function mvdir(_src='', _dest='', _opts) {
   if ( !destStats.isDirectory() ) {
     if (!opts.overwrite) {
       msg = ['Destination is an existing file: ', dest];
-      log(...msg);
+      if (opts.log) log(...msg);
       return new CustomError(4, ...msg);
     } else {
       await unlink(dest);
