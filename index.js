@@ -74,13 +74,13 @@ async function mvdir(_src='', _dest='', _opts) {
   // src and dest are both folders.
   const files = await readdir(src);
   for (const file of files) {
-    const ferom = join(src, file);
+    const from = join(src, file);
     const to = join(dest, file);
-    const stats = await stat(ferom);
+    const stats = await stat(from);
     if ( stats.isDirectory() ) {
-      await mvdir(ferom, to, opts);
+      await mvdir(from, to, opts);
     } else {
-      await moveFile(ferom, to, opts.copy);
+      await moveFile(from, to, opts.copy);
     }
   }
   if (!opts.copy) await rmdir(src);
