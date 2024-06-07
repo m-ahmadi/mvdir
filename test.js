@@ -124,5 +124,5 @@ function log(m, err) {
   console.log(`${m}[${err ? '31' : '32'}m${err ? 'fail X' : 'pass √'}[0m`);
 }
 function text() {
-  return [...Array(1000).fill('hello')].join('\n');
+  return Array(1000).fill('hello').join('\n');
 }
