@@ -15,7 +15,7 @@ await mvdir('source/file.js', 'dest/file.js'); // move file.
 await mvdir('source/file.js', 'dest/');        // move file. (same as above if dest directory already exists)
 await mvdir('source', 'dest');                 // move directory.
 await mvdir('source', 'a/b/c/dest');           // creating necessary dirs.
-await mvdir('file.js', 'D:\\file.js');         // move across drives/partitions.
+await mvdir('C:\\file.js', 'D:\\file.js');     // move across drives/partitions.
 
 // returns undefined if successful, or an error object:
 const err = await mvdir('source/file.js', 'dest/file.js');
