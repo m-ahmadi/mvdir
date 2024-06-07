@@ -126,4 +126,3 @@ class CustomError {
 }
 
 module.exports = mvdir;
-
