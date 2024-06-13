@@ -2,11 +2,11 @@ const { join, parse } = require('path');
 const { access, mkdir, stat, unlink, readdir, rename, copyFile, rmdir } = require('fs').promises;
 const log = (m1, m2) => console.log(`[91m${m1}[0m${m2}`);
 
-async function mvdir(_src='', _dest='', _opts) {
-  let src  = typeof _src  === 'string' ? _src  : undefined;
-  let dest = typeof _dest === 'string' ? _dest : undefined;
+async function mvdir(source='', destination='', options) {
+  let src  = typeof source  === 'string' ? source  : undefined;
+  let dest = typeof destination === 'string' ? destination : undefined;
   const defOpts = { overwrite: true, copy: false, log: true };
-  const opts = isObj(_opts) ? Object.assign(defOpts, _opts) : defOpts;
+  const opts = isObj(options) ? Object.assign(defOpts, options) : defOpts;
   let msg;
   // are src and dest arguments valid?
   if (!src || !dest) {
