@@ -1,5 +1,5 @@
 [![NPM](https://nodei.co/npm/mvdir.png?stars=true&downloads=true)](https://nodei.co/npm/mvdir/)  
-[![Build Status](https://travis-ci.com/m-ahmadi/mvdir.svg?branch=master)](https://travis-ci.com/m-ahmadi/mvdir)
+[![Build Status](https://app.travis-ci.com/m-ahmadi/mvdir.svg?branch=master)](https://app.travis-ci.com/github/m-ahmadi/mvdir?serverType=git)
 [![install size](https://packagephobia.now.sh/badge?p=mvdir@latest)](https://packagephobia.now.sh/result?p=mvdir@latest)
 ## Why?
 I did this: `npm i mv`,  
