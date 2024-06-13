@@ -1,6 +1,8 @@
 [![NPM](https://nodei.co/npm/mvdir.png?stars=true&downloads=true)](https://nodei.co/npm/mvdir/)  
+[![GitHub tag](https://img.shields.io/github/tag/m-ahmadi/mvdir.svg)](https://GitHub.com/m-ahmadi/mvdir/tags/)
 [![Build Status](https://app.travis-ci.com/m-ahmadi/mvdir.svg?branch=master)](https://app.travis-ci.com/github/m-ahmadi/mvdir?serverType=git)
 [![install size](https://packagephobia.now.sh/badge?p=mvdir@latest)](https://packagephobia.now.sh/result?p=mvdir@latest)
+[![GitHub issues](https://img.shields.io/github/issues/m-ahmadi/mvdir.svg)](https://GitHub.com/m-ahmadi/mvdir/issues/)
 ## Why?
 I did this: `npm i mv`,  
 then I saw this: `+ mv@2.1.1 added 15 packages`,  
